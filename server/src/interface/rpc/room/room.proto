@@ -1,0 +1,17 @@
+syntax = "proto3";
+package room;
+
+import "rpc/user.proto";
+
+service RoomHandler {
+  rpc GetRoom(SingleRequest)returns(Room){}
+}
+
+message SingleRequest {
+  int64 id = 1;
+}
+
+message Room{
+  string name = 1;
+  repeated User Users = 2;
+}
