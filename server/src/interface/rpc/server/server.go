@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"map-friend/src/infrastructure/datasource/sql_handler"
 	"map-friend/src/interface/rpc"
@@ -10,16 +11,16 @@ import (
 	"google.golang.org/grpc"
 )
 
-func GrpcRun() {
-	listener, err := net.Listen("tcp", ":5300")
+func GrpcRun(dbConfigPath, env, addr string) {
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("failed to listen: %v\n", err)
 		return
 	}
 	grpcSrv := grpc.NewServer()
 	rpc.RegisterRoomHandlerServer(grpcSrv, NewGrpcRoomServer(
-		sql_handler.NewISqlHandler(),
+		sql_handler.NewSqlHandler(dbConfigPath, env),
 	))
-	log.Printf("grpc is running!")
+	log.Printf(fmt.Sprintf("env:%s\nport%s\ngrpc server start... ", env, addr))
 	grpcSrv.Serve(listener)
 }

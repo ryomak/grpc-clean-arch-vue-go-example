@@ -1,7 +1,7 @@
 syntax = "proto3";
 package rpc;
 service UserHandler {
-  rpc Invite(InvitedUser) returns (Empty) {}
+  rpc Join(InvitedUser) returns (Empty) {}
 }
 
 message InvitedUser {

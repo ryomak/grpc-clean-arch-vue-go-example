@@ -4,7 +4,7 @@ package rpc;
 import "user.proto";
 
 service RoomHandler {
-  rpc GetRoom(RoomName)returns(Room){}
+  rpc GetRoom(Room)returns(Room){}
 }
 
 message RoomName {
@@ -15,3 +15,4 @@ message Room{
   string name = 1;
   repeated rpc.User users = 2;
 }
+

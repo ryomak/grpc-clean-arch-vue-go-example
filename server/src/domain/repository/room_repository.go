@@ -5,5 +5,5 @@ import (
 )
 
 type IRoomRepository interface {
-	GetRoomByName(string) *model.Room
+	GetRoom(string, *model.User) (*model.Room, error)
 }

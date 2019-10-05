@@ -1,16 +1,21 @@
 package sql_handler
 
-type ISqlHandler interface {
-	Get(name string)
+import (
+	"database/sql"
+	"log"
+
+	_ "github.com/go-sql-driver/mysql"
+)
+
+type SqlHandler struct {
+	DB *sql.DB
 }
 
-type sqlHandler struct {
-}
-
-func NewISqlHandler() ISqlHandler {
-	return &sqlHandler{}
-}
-
-func (sh *sqlHandler) Get(name string) {
-
+func NewSqlHandler(path, env string) *SqlHandler {
+	cs, err := NewConfigsFromFile(path)
+	if err != nil {
+		log.Fatalf("cannot open database configuration. -> %s", err)
+	}
+	db, err := cs.OpenDB(env)
+	return &SqlHandler{DB: db}
 }

@@ -6,12 +6,11 @@ package rpc
 import (
 	context "context"
 	fmt "fmt"
-	math "math"
-
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -119,17 +118,17 @@ func init() {
 func init() { proto.RegisterFile("room.proto", fileDescriptor_c5fd27dd97284ef4) }
 
 var fileDescriptor_c5fd27dd97284ef4 = []byte{
-	// 151 bytes of a gzipped FileDescriptorProto
+	// 149 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0xca, 0xcf, 0xcf,
 	0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2e, 0x2a, 0x48, 0x96, 0xe2, 0x2a, 0x2d, 0x4e,
 	0x2d, 0x82, 0x08, 0x28, 0xc9, 0x71, 0x71, 0x04, 0xe5, 0xe7, 0xe7, 0xfa, 0x25, 0xe6, 0xa6, 0x0a,
 	0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30, 0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81, 0xd9,
 	0x4a, 0xd6, 0x5c, 0x2c, 0x20, 0x79, 0x6c, 0x72, 0x42, 0xf2, 0x5c, 0xac, 0x20, 0x93, 0x8a, 0x25,
 	0x98, 0x14, 0x98, 0x35, 0xb8, 0x8d, 0x38, 0xf5, 0x8a, 0x0a, 0x92, 0xf5, 0x42, 0x8b, 0x53, 0x8b,
-	0x82, 0x20, 0xe2, 0x46, 0x26, 0x5c, 0xdc, 0x20, 0xcd, 0x1e, 0x89, 0x79, 0x29, 0x39, 0xa9, 0x45,
-	0x42, 0xaa, 0x5c, 0xec, 0xee, 0xa9, 0x25, 0x60, 0xe3, 0x78, 0xc1, 0x6a, 0x61, 0x36, 0x4b, 0x71,
-	0xc2, 0xb9, 0x4a, 0x0c, 0x49, 0x6c, 0x60, 0x97, 0x19, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0xfe,
-	0x54, 0x84, 0xb0, 0xb8, 0x00, 0x00, 0x00,
+	0x82, 0x20, 0xe2, 0x46, 0x06, 0x5c, 0xdc, 0x20, 0xcd, 0x1e, 0x89, 0x79, 0x29, 0x39, 0xa9, 0x45,
+	0x42, 0x8a, 0x5c, 0xec, 0xee, 0xa9, 0x25, 0x60, 0xe3, 0x20, 0x6a, 0x41, 0x4c, 0x29, 0x04, 0x53,
+	0x89, 0x21, 0x89, 0x0d, 0xec, 0x2a, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x22, 0x05, 0x20,
+	0x3d, 0xb4, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -144,7 +143,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RoomHandlerClient interface {
-	GetRoom(ctx context.Context, in *RoomName, opts ...grpc.CallOption) (*Room, error)
+	GetRoom(ctx context.Context, in *Room, opts ...grpc.CallOption) (*Room, error)
 }
 
 type roomHandlerClient struct {
@@ -155,7 +154,7 @@ func NewRoomHandlerClient(cc *grpc.ClientConn) RoomHandlerClient {
 	return &roomHandlerClient{cc}
 }
 
-func (c *roomHandlerClient) GetRoom(ctx context.Context, in *RoomName, opts ...grpc.CallOption) (*Room, error) {
+func (c *roomHandlerClient) GetRoom(ctx context.Context, in *Room, opts ...grpc.CallOption) (*Room, error) {
 	out := new(Room)
 	err := c.cc.Invoke(ctx, "/rpc.RoomHandler/GetRoom", in, out, opts...)
 	if err != nil {
@@ -166,14 +165,14 @@ func (c *roomHandlerClient) GetRoom(ctx context.Context, in *RoomName, opts ...g
 
 // RoomHandlerServer is the server API for RoomHandler service.
 type RoomHandlerServer interface {
-	GetRoom(context.Context, *RoomName) (*Room, error)
+	GetRoom(context.Context, *Room) (*Room, error)
 }
 
 // UnimplementedRoomHandlerServer can be embedded to have forward compatible implementations.
 type UnimplementedRoomHandlerServer struct {
 }
 
-func (*UnimplementedRoomHandlerServer) GetRoom(ctx context.Context, req *RoomName) (*Room, error) {
+func (*UnimplementedRoomHandlerServer) GetRoom(ctx context.Context, req *Room) (*Room, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
 }
 
@@ -182,7 +181,7 @@ func RegisterRoomHandlerServer(s *grpc.Server, srv RoomHandlerServer) {
 }
 
 func _RoomHandler_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RoomName)
+	in := new(Room)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -194,7 +193,7 @@ func _RoomHandler_GetRoom_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/rpc.RoomHandler/GetRoom",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RoomHandlerServer).GetRoom(ctx, req.(*RoomName))
+		return srv.(RoomHandlerServer).GetRoom(ctx, req.(*Room))
 	}
 	return interceptor(ctx, in, info, handler)
 }

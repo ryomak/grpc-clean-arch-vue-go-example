@@ -11,19 +11,24 @@ import (
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:5300", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:8080", grpc.WithInsecure())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "grpc.Dial: %v\n", err)
 		return
 	}
 	defer conn.Close()
 	client := rpc.NewRoomHandlerClient(conn)
-	req := &rpc.RoomName{Name: "test"}
+	coordinate := &rpc.Coordinate{Latitude: 123.22, Longitude: 123.22}
+	user := &rpc.User{Name: "test", Coordinate: coordinate}
+	users := []*rpc.User{
+		user,
+	}
+	req := &rpc.Room{Name: "test", Users: users}
 	room, err := client.GetRoom(context.Background(), req)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "room: %v\n", room)
 		fmt.Fprintf(os.Stderr, "room: %v\n", err)
 		return
 	}
-	fmt.Fprintf(os.Stdout, "user: %s\n", room.GetName())
+	fmt.Printf("%v", room)
 }
