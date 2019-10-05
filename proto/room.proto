@@ -1,0 +1,17 @@
+syntax = "proto3";
+package rpc;
+
+import "user.proto";
+
+service RoomHandler {
+  rpc GetRoom(RoomName)returns(Room){}
+}
+
+message RoomName {
+  string name = 1;
+}
+
+message Room{
+  string name = 1;
+  repeated rpc.User users = 2;
+}

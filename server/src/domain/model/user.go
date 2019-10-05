@@ -2,7 +2,7 @@ package model
 
 type User struct {
 	ID         uint
-	NickName   string
+	Name       string
 	RoomName   string
-	Coordinate Coordinate
+	Coordinate *Coordinate
 }

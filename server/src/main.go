@@ -1,12 +1,9 @@
 package main
 
 import (
-	"map-friend/src/interface/api"
-	"net/http"
+	"map-friend/src/interface/rpc/server"
 )
 
 func main() {
-
-	r := api.NewRouter()
-	http.ListenAndServe(":8080", r)
+	server.GrpcRun()
 }
