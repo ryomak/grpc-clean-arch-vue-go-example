@@ -3,7 +3,7 @@ package server
 import (
 	"fmt"
 	"log"
-	"map-friend/src/infrastructure/datasource/sql_handler"
+	"map-friend/src/infrastructure/datasource/database"
 	"map-friend/src/interface/rpc"
 
 	"net"
@@ -18,9 +18,11 @@ func GrpcRun(dbConfigPath, env, addr string) {
 		return
 	}
 	grpcSrv := grpc.NewServer()
-	rpc.RegisterRoomHandlerServer(grpcSrv, NewGrpcRoomServer(
-		sql_handler.NewSqlHandler(dbConfigPath, env),
-	))
+	dbm := database.GetDBM()
+	if dbm.InitDB(dbConfigPath, env); err != nil {
+		panic(err)
+	}
+	rpc.RegisterRoomHandlerServer(grpcSrv, NewGrpcRoomServer(dbm))
 	log.Printf(fmt.Sprintf("env:%s\nport%s\ngrpc server start... ", env, addr))
 	grpcSrv.Serve(listener)
 }

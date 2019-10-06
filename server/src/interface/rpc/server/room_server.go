@@ -5,14 +5,18 @@ import (
 	"errors"
 
 	"map-friend/src/application/usecase"
+	"map-friend/src/infrastructure/datasource/database"
 	"map-friend/src/infrastructure/datasource/repository"
-	"map-friend/src/infrastructure/datasource/sql_handler"
 	"map-friend/src/interface/rpc"
 	"map-friend/src/interface/rpc/transform"
 )
 
-func NewGrpcRoomServer(sqlHandler *sql_handler.SqlHandler) *grpcRoomServer {
-	usecase := usecase.NewIRoomUseCase(repository.NewIRoomRepository(sqlHandler))
+func NewGrpcRoomServer(dbm database.DBM) *grpcRoomServer {
+	usecase := usecase.NewIRoomUseCase(
+		repository.NewITransactionRepository(dbm),
+		repository.NewIRoomRepository(dbm),
+		repository.NewIUserRepository(dbm),
+	)
 	return &grpcRoomServer{usecase}
 }
 
@@ -25,7 +29,7 @@ func (s *grpcRoomServer) GetRoom(ctx context.Context, req *rpc.Room) (*rpc.Room,
 		return nil, errors.New("not selected room")
 	}
 	mRoom := transform.TransformRoomModel(req)
-	room, err := s.Usecase.GetRoom(mRoom.Name, &mRoom.Users[0])
+	room, err := s.Usecase.GetRoom(ctx, mRoom.Name, mRoom.Users[0])
 	if err != nil {
 		return nil, err
 	}

@@ -6,7 +6,7 @@ import (
 
 type Room struct {
 	Name    string
-	Users   []User
+	Users   []*User
 	Created time.Time
 	Updated time.Time
 }

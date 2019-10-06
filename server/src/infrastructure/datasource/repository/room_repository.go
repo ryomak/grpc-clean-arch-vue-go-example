@@ -1,20 +1,47 @@
 package repository
 
 import (
-	"map-friend/src/domain/model"
+	"context"
 	"map-friend/src/domain/repository"
-	"map-friend/src/infrastructure/datasource/sql_handler"
+	"map-friend/src/infrastructure/datasource/database"
 	"time"
+
+	"map-friend/src/domain/model"
 )
 
-func NewIRoomRepository(handler *sql_handler.SqlHandler) repository.IRoomRepository {
-	return &roomRepository{handler}
+func NewIRoomRepository(dbm database.DBM) repository.IRoomRepository {
+	return &roomRepository{dbm}
 }
 
 type roomRepository struct {
-	*sql_handler.SqlHandler
+	dbm database.DBM
 }
 
+func (r *roomRepository) Save(ctx context.Context, roomName string) (*model.Room, error) {
+	query := `insert into rooms (name) values (?) on DUPLICATE key update updated = ?`
+	stmt, err := r.dbm.Prepare(ctx, query)
+	_, err = stmt.ExecContext(ctx, roomName, time.Now())
+	if err != nil {
+		return nil, err
+	}
+	return r.Get(ctx, roomName)
+}
+
+func (r *roomRepository) Get(ctx context.Context, name string) (*model.Room, error) {
+	room := &model.Room{}
+	query := "select * from rooms where name = ?"
+	stmt, err := r.dbm.Prepare(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	err = stmt.QueryRowContext(ctx, name).Scan(&room.Name, &room.Created, &room.Updated)
+	if err != nil {
+		return nil, err
+	}
+	return room, nil
+}
+
+/*
 func (r *roomRepository) GetRoom(roomName string, user *model.User) (*model.Room, error) {
 	room := new(model.Room)
 	tx, _ := r.DB.Begin()
@@ -34,7 +61,7 @@ func (r *roomRepository) GetRoom(roomName string, user *model.User) (*model.Room
 		room.Created = time.Now()
 	}
 	//userの情報を更新
-	stmt := `insert into users (room_name,user_name,latitude,longitude) values (?,?,?,?) 
+	stmt := `insert into users (room_name,user_name,latitude,longitude) values (?,?,?,?)
 			on DUPLICATE key update latitude = ? , longitude = ?`
 	if _, err := tx.Exec(stmt,
 		roomName, user.Name, user.Coordinate.Latitude, user.Coordinate.Longitude,
@@ -76,3 +103,4 @@ func (r *roomRepository) GetRoom(roomName string, user *model.User) (*model.Room
 		Created: room.Created,
 	}, tx.Commit()
 }
+*/

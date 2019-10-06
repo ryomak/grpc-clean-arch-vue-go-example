@@ -18,7 +18,7 @@ func main() {
 	}
 	defer conn.Close()
 	client := rpc.NewRoomHandlerClient(conn)
-	coordinate := &rpc.Coordinate{Latitude: 123.22, Longitude: 123.22}
+	coordinate := &rpc.Coordinate{Latitude: 13.22, Longitude: 12.22}
 	user := &rpc.User{Name: "test", Coordinate: coordinate}
 	users := []*rpc.User{
 		user,

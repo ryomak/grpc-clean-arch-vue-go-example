@@ -1,4 +1,4 @@
-package sql_handler
+package database
 
 import (
 	"database/sql"
@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"gopkg.in/yaml.v1"
+	yaml "gopkg.in/yaml.v1"
 )
 
 type Config struct {
