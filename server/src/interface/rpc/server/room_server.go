@@ -24,7 +24,7 @@ type grpcRoomServer struct {
 	Usecase usecase.IRoomUseCase
 }
 
-func (s *grpcRoomServer) GetRoom(ctx context.Context, req *rpc.Room) (*rpc.Room, error) {
+func (s *grpcRoomServer) GetRoom(ctx context.Context, req *rpc.RoomRequest) (*rpc.RoomResponse, error) {
 	if req == nil {
 		return nil, errors.New("not selected room")
 	}
@@ -34,4 +34,8 @@ func (s *grpcRoomServer) GetRoom(ctx context.Context, req *rpc.Room) (*rpc.Room,
 		return nil, err
 	}
 	return transform.TransformRoomRpc(room), nil
+}
+
+func (s *grpcRoomServer) GetRoomStream(server rpc.RoomHandler_GetRoomStreamServer) error {
+	return nil
 }

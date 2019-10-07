@@ -5,23 +5,21 @@ import (
 	"map-friend/src/interface/rpc"
 )
 
-func TransformRoomModel(rRoom *rpc.Room) *model.Room {
-	users := make([]*model.User, len(rRoom.GetUsers()))
-	for i := 0; i < len(rRoom.GetUsers()); i++ {
-		users[i] = TransformUserModel(rRoom.GetUsers()[i])
-	}
+func TransformRoomModel(rRoom *rpc.RoomRequest) *model.Room {
 	return &model.Room{
-		Name:  rRoom.GetName(),
-		Users: users,
+		Name: rRoom.GetName(),
+		Users: []*model.User{
+			TransformUserModel(rRoom.GetUser()),
+		},
 	}
 }
 
-func TransformRoomRpc(mRoom *model.Room) *rpc.Room {
+func TransformRoomRpc(mRoom *model.Room) *rpc.RoomResponse {
 	users := make([]*rpc.User, len(mRoom.Users))
 	for i := 0; i < len(mRoom.Users); i++ {
 		users[i] = TransformUserRpc(mRoom.Users[i])
 	}
-	return &rpc.Room{
+	return &rpc.RoomResponse{
 		Name:  mRoom.Name,
 		Users: users,
 	}

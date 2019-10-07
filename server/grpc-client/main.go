@@ -20,10 +20,7 @@ func main() {
 	client := rpc.NewRoomHandlerClient(conn)
 	coordinate := &rpc.Coordinate{Latitude: 13.22, Longitude: 12.22}
 	user := &rpc.User{Name: "test", Coordinate: coordinate}
-	users := []*rpc.User{
-		user,
-	}
-	req := &rpc.Room{Name: "test", Users: users}
+	req := &rpc.RoomRequest{Name: "test", User: user}
 	room, err := client.GetRoom(context.Background(), req)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "room: %v\n", room)

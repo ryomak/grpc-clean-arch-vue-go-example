@@ -1,5 +1,9 @@
 module.exports = {
   presets: [
-    '@vue/app'
-  ]
+    '@vue/app',
+    ['env',{
+      'modules':'commonjs'
+    }]
+  ],
+  'plugins':['add-module-exports']
 }

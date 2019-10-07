@@ -6,12 +6,11 @@ package rpc
 import (
 	context "context"
 	fmt "fmt"
-	math "math"
-
 	proto "github.com/golang/protobuf/proto"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -64,7 +63,54 @@ func (m *RoomName) GetName() string {
 	return ""
 }
 
-type Room struct {
+type RoomRequest struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	User                 *User    `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RoomRequest) Reset()         { *m = RoomRequest{} }
+func (m *RoomRequest) String() string { return proto.CompactTextString(m) }
+func (*RoomRequest) ProtoMessage()    {}
+func (*RoomRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c5fd27dd97284ef4, []int{1}
+}
+
+func (m *RoomRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RoomRequest.Unmarshal(m, b)
+}
+func (m *RoomRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RoomRequest.Marshal(b, m, deterministic)
+}
+func (m *RoomRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RoomRequest.Merge(m, src)
+}
+func (m *RoomRequest) XXX_Size() int {
+	return xxx_messageInfo_RoomRequest.Size(m)
+}
+func (m *RoomRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RoomRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RoomRequest proto.InternalMessageInfo
+
+func (m *RoomRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *RoomRequest) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
+type RoomResponse struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Users                []*User  `protobuf:"bytes,2,rep,name=users,proto3" json:"users,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -72,39 +118,39 @@ type Room struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Room) Reset()         { *m = Room{} }
-func (m *Room) String() string { return proto.CompactTextString(m) }
-func (*Room) ProtoMessage()    {}
-func (*Room) Descriptor() ([]byte, []int) {
-	return fileDescriptor_c5fd27dd97284ef4, []int{1}
+func (m *RoomResponse) Reset()         { *m = RoomResponse{} }
+func (m *RoomResponse) String() string { return proto.CompactTextString(m) }
+func (*RoomResponse) ProtoMessage()    {}
+func (*RoomResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c5fd27dd97284ef4, []int{2}
 }
 
-func (m *Room) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Room.Unmarshal(m, b)
+func (m *RoomResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RoomResponse.Unmarshal(m, b)
 }
-func (m *Room) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Room.Marshal(b, m, deterministic)
+func (m *RoomResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RoomResponse.Marshal(b, m, deterministic)
 }
-func (m *Room) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Room.Merge(m, src)
+func (m *RoomResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RoomResponse.Merge(m, src)
 }
-func (m *Room) XXX_Size() int {
-	return xxx_messageInfo_Room.Size(m)
+func (m *RoomResponse) XXX_Size() int {
+	return xxx_messageInfo_RoomResponse.Size(m)
 }
-func (m *Room) XXX_DiscardUnknown() {
-	xxx_messageInfo_Room.DiscardUnknown(m)
+func (m *RoomResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RoomResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Room proto.InternalMessageInfo
+var xxx_messageInfo_RoomResponse proto.InternalMessageInfo
 
-func (m *Room) GetName() string {
+func (m *RoomResponse) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Room) GetUsers() []*User {
+func (m *RoomResponse) GetUsers() []*User {
 	if m != nil {
 		return m.Users
 	}
@@ -113,23 +159,27 @@ func (m *Room) GetUsers() []*User {
 
 func init() {
 	proto.RegisterType((*RoomName)(nil), "rpc.RoomName")
-	proto.RegisterType((*Room)(nil), "rpc.Room")
+	proto.RegisterType((*RoomRequest)(nil), "rpc.RoomRequest")
+	proto.RegisterType((*RoomResponse)(nil), "rpc.RoomResponse")
 }
 
 func init() { proto.RegisterFile("room.proto", fileDescriptor_c5fd27dd97284ef4) }
 
 var fileDescriptor_c5fd27dd97284ef4 = []byte{
-	// 149 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0xca, 0xcf, 0xcf,
-	0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2e, 0x2a, 0x48, 0x96, 0xe2, 0x2a, 0x2d, 0x4e,
-	0x2d, 0x82, 0x08, 0x28, 0xc9, 0x71, 0x71, 0x04, 0xe5, 0xe7, 0xe7, 0xfa, 0x25, 0xe6, 0xa6, 0x0a,
-	0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30, 0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81, 0xd9,
-	0x4a, 0xd6, 0x5c, 0x2c, 0x20, 0x79, 0x6c, 0x72, 0x42, 0xf2, 0x5c, 0xac, 0x20, 0x93, 0x8a, 0x25,
-	0x98, 0x14, 0x98, 0x35, 0xb8, 0x8d, 0x38, 0xf5, 0x8a, 0x0a, 0x92, 0xf5, 0x42, 0x8b, 0x53, 0x8b,
-	0x82, 0x20, 0xe2, 0x46, 0x06, 0x5c, 0xdc, 0x20, 0xcd, 0x1e, 0x89, 0x79, 0x29, 0x39, 0xa9, 0x45,
-	0x42, 0x8a, 0x5c, 0xec, 0xee, 0xa9, 0x25, 0x60, 0xe3, 0x20, 0x6a, 0x41, 0x4c, 0x29, 0x04, 0x53,
-	0x89, 0x21, 0x89, 0x0d, 0xec, 0x2a, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x22, 0x05, 0x20,
-	0x3d, 0xb4, 0x00, 0x00, 0x00,
+	// 204 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x90, 0x3d, 0x4f, 0x86, 0x30,
+	0x10, 0xc7, 0xed, 0x03, 0xbe, 0x70, 0x68, 0xa2, 0x37, 0x11, 0x12, 0x95, 0x74, 0x62, 0x22, 0x04,
+	0x37, 0x27, 0x13, 0x07, 0x9d, 0x1c, 0x6a, 0xfc, 0x00, 0x15, 0x6f, 0xb3, 0xb4, 0x5e, 0xcb, 0xe4,
+	0x97, 0x37, 0x6d, 0x1d, 0x30, 0x61, 0x70, 0x6b, 0x7e, 0xfd, 0xbf, 0xe5, 0x00, 0xd8, 0x5a, 0x33,
+	0x38, 0xb6, 0xc1, 0x62, 0xc1, 0x6e, 0x6e, 0x61, 0xf5, 0xc4, 0x19, 0xc8, 0x1b, 0x38, 0x53, 0xd6,
+	0x9a, 0x17, 0x6d, 0x08, 0x11, 0xca, 0x45, 0x1b, 0x6a, 0x44, 0x27, 0xfa, 0x4a, 0xa5, 0xb7, 0x7c,
+	0x80, 0x3a, 0xfe, 0x2b, 0xfa, 0x5a, 0xc9, 0x87, 0x3d, 0x09, 0x5e, 0x43, 0x19, 0x03, 0x9b, 0x43,
+	0x27, 0xfa, 0x7a, 0xaa, 0x06, 0x76, 0xf3, 0xf0, 0xe6, 0x89, 0x55, 0xc2, 0xf2, 0x11, 0xce, 0x73,
+	0x82, 0x77, 0x76, 0xf1, 0xbb, 0x2d, 0x78, 0x0b, 0xc7, 0x51, 0xeb, 0x9b, 0x43, 0x57, 0xfc, 0xcd,
+	0xc8, 0x7c, 0xfa, 0xce, 0x33, 0x9e, 0xf5, 0xf2, 0xf1, 0x49, 0x8c, 0x23, 0x9c, 0x3e, 0x51, 0x88,
+	0x04, 0x2f, 0x93, 0x76, 0xb3, 0xb1, 0xbd, 0xda, 0x90, 0xdc, 0x29, 0x8f, 0xf0, 0x1e, 0x2e, 0x7e,
+	0x1d, 0xaf, 0x81, 0x49, 0xff, 0xd7, 0xd7, 0x8b, 0x51, 0xbc, 0x9f, 0xa4, 0x53, 0xdd, 0xfd, 0x04,
+	0x00, 0x00, 0xff, 0xff, 0x3b, 0xef, 0x3d, 0x3f, 0x49, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -144,7 +194,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type RoomHandlerClient interface {
-	GetRoom(ctx context.Context, in *Room, opts ...grpc.CallOption) (*Room, error)
+	GetRoom(ctx context.Context, in *RoomRequest, opts ...grpc.CallOption) (*RoomResponse, error)
+	GetRoomStream(ctx context.Context, opts ...grpc.CallOption) (RoomHandler_GetRoomStreamClient, error)
 }
 
 type roomHandlerClient struct {
@@ -155,8 +206,8 @@ func NewRoomHandlerClient(cc *grpc.ClientConn) RoomHandlerClient {
 	return &roomHandlerClient{cc}
 }
 
-func (c *roomHandlerClient) GetRoom(ctx context.Context, in *Room, opts ...grpc.CallOption) (*Room, error) {
-	out := new(Room)
+func (c *roomHandlerClient) GetRoom(ctx context.Context, in *RoomRequest, opts ...grpc.CallOption) (*RoomResponse, error) {
+	out := new(RoomResponse)
 	err := c.cc.Invoke(ctx, "/rpc.RoomHandler/GetRoom", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -164,17 +215,52 @@ func (c *roomHandlerClient) GetRoom(ctx context.Context, in *Room, opts ...grpc.
 	return out, nil
 }
 
+func (c *roomHandlerClient) GetRoomStream(ctx context.Context, opts ...grpc.CallOption) (RoomHandler_GetRoomStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_RoomHandler_serviceDesc.Streams[0], "/rpc.RoomHandler/GetRoomStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &roomHandlerGetRoomStreamClient{stream}
+	return x, nil
+}
+
+type RoomHandler_GetRoomStreamClient interface {
+	Send(*RoomRequest) error
+	Recv() (*RoomResponse, error)
+	grpc.ClientStream
+}
+
+type roomHandlerGetRoomStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *roomHandlerGetRoomStreamClient) Send(m *RoomRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *roomHandlerGetRoomStreamClient) Recv() (*RoomResponse, error) {
+	m := new(RoomResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // RoomHandlerServer is the server API for RoomHandler service.
 type RoomHandlerServer interface {
-	GetRoom(context.Context, *Room) (*Room, error)
+	GetRoom(context.Context, *RoomRequest) (*RoomResponse, error)
+	GetRoomStream(RoomHandler_GetRoomStreamServer) error
 }
 
 // UnimplementedRoomHandlerServer can be embedded to have forward compatible implementations.
 type UnimplementedRoomHandlerServer struct {
 }
 
-func (*UnimplementedRoomHandlerServer) GetRoom(ctx context.Context, req *Room) (*Room, error) {
+func (*UnimplementedRoomHandlerServer) GetRoom(ctx context.Context, req *RoomRequest) (*RoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
+}
+func (*UnimplementedRoomHandlerServer) GetRoomStream(srv RoomHandler_GetRoomStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetRoomStream not implemented")
 }
 
 func RegisterRoomHandlerServer(s *grpc.Server, srv RoomHandlerServer) {
@@ -182,7 +268,7 @@ func RegisterRoomHandlerServer(s *grpc.Server, srv RoomHandlerServer) {
 }
 
 func _RoomHandler_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Room)
+	in := new(RoomRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -194,9 +280,35 @@ func _RoomHandler_GetRoom_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/rpc.RoomHandler/GetRoom",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RoomHandlerServer).GetRoom(ctx, req.(*Room))
+		return srv.(RoomHandlerServer).GetRoom(ctx, req.(*RoomRequest))
 	}
 	return interceptor(ctx, in, info, handler)
+}
+
+func _RoomHandler_GetRoomStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(RoomHandlerServer).GetRoomStream(&roomHandlerGetRoomStreamServer{stream})
+}
+
+type RoomHandler_GetRoomStreamServer interface {
+	Send(*RoomResponse) error
+	Recv() (*RoomRequest, error)
+	grpc.ServerStream
+}
+
+type roomHandlerGetRoomStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *roomHandlerGetRoomStreamServer) Send(m *RoomResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *roomHandlerGetRoomStreamServer) Recv() (*RoomRequest, error) {
+	m := new(RoomRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 var _RoomHandler_serviceDesc = grpc.ServiceDesc{
@@ -208,6 +320,13 @@ var _RoomHandler_serviceDesc = grpc.ServiceDesc{
 			Handler:    _RoomHandler_GetRoom_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetRoomStream",
+			Handler:       _RoomHandler_GetRoomStream_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "room.proto",
 }
