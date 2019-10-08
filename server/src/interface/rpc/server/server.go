@@ -1,28 +1,41 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"map-friend/src/infrastructure/datasource/database"
 	"map-friend/src/interface/rpc"
+	"net/http"
 
-	"net"
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 
 	"google.golang.org/grpc"
 )
 
 func GrpcRun(dbConfigPath, env, addr string) {
-	listener, err := net.Listen("tcp", addr)
-	if err != nil {
-		log.Fatalf("failed to listen: %v\n", err)
-		return
-	}
-	grpcSrv := grpc.NewServer()
+
+	//dbm init
 	dbm := database.GetDBM()
-	if dbm.InitDB(dbConfigPath, env); err != nil {
+	if err := dbm.InitDB(dbConfigPath, env); err != nil {
 		panic(err)
 	}
+
+	grpcSrv := grpc.NewServer()
 	rpc.RegisterRoomHandlerServer(grpcSrv, NewGrpcRoomServer(dbm))
-	log.Printf(fmt.Sprintf("env:%s\nport%s\ngrpc server start... ", env, addr))
-	grpcSrv.Serve(listener)
+
+	//for client(wrap)
+	wrappedGrpc := grpcweb.WrapServer(grpcSrv)
+
+	handler := func(res http.ResponseWriter, req *http.Request) {
+		wrappedGrpc.ServeHTTP(res, req)
+	}
+
+	httpServer := http.Server{
+		Addr:    addr,
+		Handler: http.HandlerFunc(handler),
+	}
+	log.Printf("[%s]starting http server port: %s", env, addr)
+
+	if err := httpServer.ListenAndServe(); err != nil {
+		log.Fatalf("failed to start http server:%v", err)
+	}
 }
