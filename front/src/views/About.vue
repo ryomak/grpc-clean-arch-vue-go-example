@@ -12,33 +12,23 @@ export default {
   data: function () {
     return {
       inputField: '',
-      num: 0 ,
+      data:{},
       client:null,
     }
   },
   created: function () {
     // eslint-disable-next-line
     this.client = new RoomHandlerClient('http://localhost:8080', null, null)
-    this.getTotalNum()
+    this.updateRoom()
   },
   methods: {
-    getTotalNum: function () {
+    updateRoom: function () {
       // eslint-disable-next-line
-      let getRequest = new getTotalNumParams()
+      let roomReqest = new RoomReqest()
       // eslint-disable-next-line
-      this.client.getTotalNum(getRequest, {}, (err, response) => {
-        this.num = response.toObject()
-        console.log(this.num)
-      })
-    },
-    addNum: function () {
-      // eslint-disable-next-line
-      let request = new addNumParams()
-      request.setNumber(Number(this.inputField))
-      // eslint-disable-next-line
-      this.client.addNum(request, {}, (err, response) => {
-        this.inputField = ''
-        this.num = response.toObject()
+      this.client.GetRoom(roomReqest, {}, (err, response) => {
+        this.data = response.toObject()
+        console.log(this.data)
       })
     }
   }
