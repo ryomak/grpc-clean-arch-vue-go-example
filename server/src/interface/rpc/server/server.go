@@ -23,7 +23,10 @@ func GrpcRun(dbConfigPath, env, addr string) {
 	rpc.RegisterRoomHandlerServer(grpcSrv, NewGrpcRoomServer(dbm))
 
 	//for client(wrap)
-	wrappedGrpc := grpcweb.WrapServer(grpcSrv)
+	wrappedGrpc := grpcweb.WrapServer(
+		grpcSrv,
+		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
+	)
 
 	handler := func(res http.ResponseWriter, req *http.Request) {
 		wrappedGrpc.ServeHTTP(res, req)
