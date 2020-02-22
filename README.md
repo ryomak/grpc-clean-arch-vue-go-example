@@ -14,9 +14,26 @@ display member's coordinate of same room
 ex)/radar/roomA/ryoma
 ```
 
+## USAGE
+1. vue proto build
+``` $ cd front && sh protobuild.sh && cd ..  ```
 
+2. go proto build
+``` cd server && make proto-build && cd ..```
+
+3. go db setting
+```$ make migrate/init && make migrate/up ```
+
+4. running server
+```$ make run ```
+
+5. running vue-server
+```$ npm run serve ``` 
 
 display member point of same room 
+
+## TODO
+- [ ] to set docker mysql
 
 ## LICENSE
 MIT
