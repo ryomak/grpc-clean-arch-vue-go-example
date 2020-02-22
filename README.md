@@ -4,8 +4,8 @@ FE: grpc-web + Vuejs
 
 ## simple gps map (WIP)
 display member's coordinate of same room
+<img width="727" alt="スクリーンショット 2020-02-22 17 48 15" src="https://user-images.githubusercontent.com/21288308/75089409-d3cde780-559b-11ea-9bf1-f63eafa62f04.png">
 
-<img width="685" alt="スクリーンショット 2019-10-13 17 52 21" src="https://user-images.githubusercontent.com/21288308/67107581-b06ae880-f207-11e9-95e8-3def795f9514.png">
 
 
 ### I/F
