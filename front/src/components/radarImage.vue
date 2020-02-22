@@ -17,8 +17,6 @@ export default {
         }
     },
     mounted() {
-        // mounted 以降で canvas の DOM にアクセスできる
-        // CreateJS などを使うときにも、ここで canvas と紐付ける
         this.ctx = this.$el.getContext('2d')
         this.ctx.translate(this.$el.width/2,this.$el.height/2);
         this.ctx.font = "18px arial white";
@@ -27,9 +25,6 @@ export default {
     computed:{
         dots(){
             let dd = this.directionAndDistanseWithoutMe(this.userList);
-            //dd.forEach(v=>{
-            //    max = Math.max(v.zahyo.x,v.zahyo.y,max)
-            //});
             return {users:dd}
         },
         minLen(){
@@ -43,20 +38,25 @@ export default {
     methods:{
         interval(){
             setInterval(() => {
+                this.ctx.clearRect(-1/2*this.$el.width, -1/2* this.$el.height, this.$el.width, this.$el.height );
                 this.draw();
             }, 2000);
         },
         draw(){
             this.dots.users.forEach(v=>{
-                this.drawDot(this.rate*v.zahyo.x,this.rate*v.zahyo.y)
+                console.log(v.name)
+                this.drawDot(v.name, this.rate*v.zahyo.x,this.rate*v.zahyo.y)
             })
             this.drawEquidistantLine()
         },
-        drawDot(x,y){
+        drawDot(name, x, y){
             this.ctx.beginPath();
             this.ctx.arc(x,y , 3,0 , 2 * Math.PI);
             this.ctx.fillStyle = "white";
             this.ctx.fill();
+            this.ctx.font = "10px Arial";
+            this.ctx.fillStyle = "white";
+            this.ctx.fillText(name,x+3, y-8);
         },
         clean(){
             //this.ctx.clearRect(0, 0, 200, 200)

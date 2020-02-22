@@ -14,14 +14,6 @@ export default new Router({
       component: Home
     },
     {
-      path: '/map/:roomname/:nickname',
-      name: 'mapfriend',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('./views/Map.vue')
-    },
-    {
       path: '/radar/:roomname/:nickname',
       name: 'radar',
       // route level code-splitting
