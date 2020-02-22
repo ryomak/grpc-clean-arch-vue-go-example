@@ -14,6 +14,10 @@ display member's coordinate of same room
 ex)/radar/roomA/ryoma
 ```
 
+## Version
+- Node:v13.2
+- Go:v1.12
+
 ## USAGE
 1. vue proto build
 ``` $ cd front && sh protobuild.sh && cd ..  ```
